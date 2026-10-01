@@ -1,0 +1,82 @@
+[
+  {
+    "id": "clinic-downtown",
+    "name": "Downtown Eye Clinic",
+    "description": "Full-service eye clinic in the city centre.",
+    "address": "12 Market Street",
+    "contact": "555-0101",
+    "opticianIds": ["opt-alice", "opt-mary"]
+  },
+  {
+    "id": "clinic-uptown",
+    "name": "Uptown Vision Center",
+    "description": "Neighbourhood vision center for consults and fittings.",
+    "address": "88 North Avenue",
+    "contact": "555-0102",
+    "opticianIds": ["opt-bob", "opt-mary"]
+  },
+  {
+    "id": "clinic-suburban",
+    "name": "Suburban Optometry",
+    "description": "Family optometry practice in the suburbs.",
+    "address": "4 Oak Lane",
+    "contact": "555-0103",
+    "opticianIds": ["opt-mary", "opt-diane"]
+  },
+  {
+    "id": "clinic-clyside",
+    "name": "Clyside Eye Care",
+    "description": "Community eye care on the riverside.",
+    "address": "19 Clyde Road",
+    "contact": "555-0104",
+    "opticianIds": ["opt-diane", "opt-eve"]
+  },
+  {
+    "id": "clinic-lakeside",
+    "name": "Lakeside Vision Clinic",
+    "description": "Lakeside clinic for exams and contact lenses.",
+    "address": "2 Lake Drive",
+    "contact": "555-0105",
+    "opticianIds": ["opt-eve", "opt-frank"]
+  },
+  {
+    "id": "clinic-greenwood",
+    "name": "Greenwood Eye Specialists",
+    "description": "Specialist consults and eye exams.",
+    "address": "70 Greenwood Park",
+    "contact": "555-0106",
+    "opticianIds": ["opt-frank", "opt-grace"]
+  },
+  {
+    "id": "clinic-harborview",
+    "name": "Harborview Optometry",
+    "description": "Harbor-side optometry and glasses fittings.",
+    "address": "15 Harbor Road",
+    "contact": "555-0107",
+    "opticianIds": ["opt-grace", "opt-henry"]
+  },
+  {
+    "id": "clinic-mountainview",
+    "name": "Mountainview Eye Care",
+    "description": "Eye care clinic serving the northern hills.",
+    "address": "9 Summit Way",
+    "contact": "555-0108",
+    "opticianIds": ["opt-henry", "opt-ivy"]
+  },
+  {
+    "id": "clinic-riverside",
+    "name": "Riverside Vision Specialists",
+    "description": "Vision specialists along the river.",
+    "address": "33 River Walk",
+    "contact": "555-0109",
+    "opticianIds": ["opt-ivy", "opt-jack"]
+  },
+  {
+    "id": "clinic-seaside",
+    "name": "Seaside Optometry Clinic",
+    "description": "Coastal clinic for consults and glasses.",
+    "address": "1 Bay Street",
+    "contact": "555-0110",
+    "opticianIds": ["opt-jack", "opt-alice"]
+  }
+]

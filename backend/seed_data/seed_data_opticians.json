@@ -1,0 +1,62 @@
+[
+  {
+    "id": "opt-alice",
+    "name": "Alice Smith",
+    "intro": "Alice focuses on routine consults and comprehensive eye exams.",
+    "serviceIds": ["svc-consult", "svc-exam"]
+  },
+  {
+    "id": "opt-bob",
+    "name": "Bob Johnson",
+    "intro": "Bob helps patients with consults and contact lens fittings.",
+    "serviceIds": ["svc-consult", "svc-contacts"]
+  },
+  {
+    "id": "opt-mary",
+    "name": "Mary Davis",
+    "intro": "Mary provides consults and comprehensive exams across downtown and suburban clinics.",
+    "serviceIds": ["svc-consult", "svc-exam"]
+  },
+  {
+    "id": "opt-diane",
+    "name": "Diane Evans",
+    "intro": "Diane specialises in consults and glasses fittings.",
+    "serviceIds": ["svc-consult", "svc-glasses"]
+  },
+  {
+    "id": "opt-eve",
+    "name": "Eve Foster",
+    "intro": "Eve offers consults and contact lens care.",
+    "serviceIds": ["svc-consult", "svc-contacts"]
+  },
+  {
+    "id": "opt-frank",
+    "name": "Frank Green",
+    "intro": "Frank provides consults and comprehensive eye exams.",
+    "serviceIds": ["svc-consult", "svc-exam"]
+  },
+  {
+    "id": "opt-grace",
+    "name": "Grace Hill",
+    "intro": "Grace helps patients choose frames and complete consults.",
+    "serviceIds": ["svc-consult", "svc-glasses"]
+  },
+  {
+    "id": "opt-henry",
+    "name": "Henry Irving",
+    "intro": "Henry provides consults and detailed eye examinations.",
+    "serviceIds": ["svc-consult", "svc-exam"]
+  },
+  {
+    "id": "opt-ivy",
+    "name": "Ivy Jackson",
+    "intro": "Ivy offers consults and contact lens fittings.",
+    "serviceIds": ["svc-consult", "svc-contacts"]
+  },
+  {
+    "id": "opt-jack",
+    "name": "Jack Kelly",
+    "intro": "Jack provides consults and glasses fittings at coastal clinics.",
+    "serviceIds": ["svc-consult", "svc-glasses"]
+  }
+]

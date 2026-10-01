@@ -1,0 +1,35 @@
+[
+  {
+    "id": "user-james",
+    "email": "james@gmail.com",
+    "password": "james",
+    "role": "patient",
+    "firstName": "James",
+    "lastName": "Lee",
+    "phoneNumber": "555-2001",
+    "birthday": "1992-03-14",
+    "opticianId": null
+  },
+  {
+    "id": "user-mary",
+    "email": "mary@gmail.com",
+    "password": "mary",
+    "role": "optician",
+    "firstName": "Mary",
+    "lastName": "Davis",
+    "phoneNumber": "555-2002",
+    "birthday": "1985-06-02",
+    "opticianId": "opt-mary"
+  },
+  {
+    "id": "user-wang",
+    "email": "wtang4@gmail.com",
+    "password": "wang",
+    "role": "patient",
+    "firstName": "Wang",
+    "lastName": "Tang",
+    "phoneNumber": "567-890-1234",
+    "birthday": "1990-07-07",
+    "opticianId": null
+  }
+]

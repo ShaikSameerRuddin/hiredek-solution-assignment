@@ -1,0 +1,4 @@
+app_data/
+dist/
+node_modules/
+*.log

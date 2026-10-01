@@ -1,0 +1,56 @@
+[
+  {
+    "id": "apt-wang-1",
+    "patientId": "user-wang",
+    "opticianId": "opt-mary",
+    "appointmentDatetime": "2026-10-15T11:00:00",
+    "clinicId": "clinic-suburban",
+    "serviceId": "svc-consult",
+    "notes": ""
+  },
+  {
+    "id": "apt-wang-2",
+    "patientId": "user-wang",
+    "opticianId": "opt-mary",
+    "appointmentDatetime": "2026-11-03T11:00:00",
+    "clinicId": "clinic-uptown",
+    "serviceId": "svc-consult",
+    "notes": ""
+  },
+  {
+    "id": "apt-wang-3",
+    "patientId": "user-wang",
+    "opticianId": "opt-mary",
+    "appointmentDatetime": "2026-12-03T11:00:00",
+    "clinicId": "clinic-downtown",
+    "serviceId": "svc-consult",
+    "notes": "I have a cough"
+  },
+  {
+    "id": "apt-wang-h1",
+    "patientId": "user-wang",
+    "opticianId": "opt-jack",
+    "appointmentDatetime": "2025-11-20T09:00:00",
+    "clinicId": "clinic-seaside",
+    "serviceId": "svc-consult",
+    "notes": ""
+  },
+  {
+    "id": "apt-wang-h2",
+    "patientId": "user-wang",
+    "opticianId": "opt-jack",
+    "appointmentDatetime": "2025-11-20T10:00:00",
+    "clinicId": "clinic-seaside",
+    "serviceId": "svc-consult",
+    "notes": ""
+  },
+  {
+    "id": "apt-wang-h3",
+    "patientId": "user-wang",
+    "opticianId": "opt-eve",
+    "appointmentDatetime": "2025-11-26T11:00:00",
+    "clinicId": "clinic-lakeside",
+    "serviceId": "svc-consult",
+    "notes": "I have many coughs"
+  }
+]

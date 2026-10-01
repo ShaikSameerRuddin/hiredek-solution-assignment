@@ -1,0 +1,22 @@
+[
+  {
+    "id": "svc-consult",
+    "name": "Consult",
+    "description": "General eye consultation with an optician."
+  },
+  {
+    "id": "svc-exam",
+    "name": "Comprehensive Eye Exam",
+    "description": "Full vision and eye health examination."
+  },
+  {
+    "id": "svc-contacts",
+    "name": "Contact Lens Fitting",
+    "description": "Fitting and trial of contact lenses."
+  },
+  {
+    "id": "svc-glasses",
+    "name": "Glasses Fitting",
+    "description": "Frame selection and prescription glasses fitting."
+  }
+]
