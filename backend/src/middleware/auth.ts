@@ -3,14 +3,23 @@ import jwt from "jsonwebtoken";
 import { HttpError } from "../errors.js";
 import type { AuthTokenPayload, Role } from "../types.js";
 
-const JWT_SECRET = process.env.JWT_SECRET ?? "eyecare-dev-secret";
+function jwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (secret) {
+    return secret;
+  }
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("JWT_SECRET is required in production");
+  }
+  return "eyecare-dev-secret";
+}
 
 export function signToken(payload: AuthTokenPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "12h" });
+  return jwt.sign(payload, jwtSecret(), { expiresIn: "12h" });
 }
 
 export function verifyToken(token: string): AuthTokenPayload {
-  const decoded = jwt.verify(token, JWT_SECRET);
+  const decoded = jwt.verify(token, jwtSecret());
   if (typeof decoded === "string" || !decoded.sub || !decoded.role) {
     throw new HttpError(401, "Invalid token");
   }

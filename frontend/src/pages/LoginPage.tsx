@@ -11,10 +11,12 @@ export function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
 
   return (
-    <main className="login-screen">
+    <main id="main-content" className="login-screen">
       <section className="login-card">
         <h1>Eye Care App</h1>
-        {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+          {error ? (
+            <Alert type="error" showIcon role="alert" message={error} style={{ marginBottom: 16 }} />
+          ) : null}
         <Form
           layout="vertical"
           requiredMark

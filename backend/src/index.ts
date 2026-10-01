@@ -11,6 +11,11 @@ const backendRoot = path.resolve(currentDir, "..");
 const port = Number(process.env.PORT ?? 3001);
 const frontendDist = path.resolve(backendRoot, "../frontend/dist");
 
+if (process.env.NODE_ENV === "production" && !process.env.JWT_SECRET) {
+  logger.error("JWT_SECRET is required in production");
+  process.exit(1);
+}
+
 const store = new JsonStore(path.join(backendRoot, "app_data"), path.join(backendRoot, "seed_data"));
 
 await store.bootstrap();

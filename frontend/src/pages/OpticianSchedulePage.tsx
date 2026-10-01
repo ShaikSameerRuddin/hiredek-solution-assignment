@@ -41,8 +41,8 @@ export function OpticianSchedulePage() {
 
   return (
     <>
-      <AppHeader title="Optician: View Optician's Upcoming Appointments" active="schedule" />
-      <main className="page">
+      <AppHeader title="Upcoming appointments" active="schedule" />
+      <main id="main-content" className="page">
         <h2>{titleName} Upcoming Appointment</h2>
         {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
         <Table

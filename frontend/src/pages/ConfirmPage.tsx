@@ -1,24 +1,29 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Alert, Button, Form, Input, Select } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api, ApiError } from "../api/client";
 import { AppHeader } from "../components/AppHeader";
 import type { BookingDraft } from "../types";
+import { clearBookingDraft, loadBookingDraft, markBookingSuccess } from "../utils/bookingDraft";
 import { formatLongDate } from "../utils/datetime";
 
 export function ConfirmPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const draft = location.state as BookingDraft | null;
+  const draft = useMemo(() => {
+    const fromState = location.state as BookingDraft | null;
+    return fromState?.serviceId ? fromState : loadBookingDraft();
+  }, [location.state]);
   const [notes, setNotes] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [conflict, setConflict] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   if (!draft?.serviceId || !draft.date || !draft.time) {
     return (
       <>
-        <AppHeader title="Patient: Confirm Appointment Details" active="catalogue" />
-        <main className="page">
+        <AppHeader title="Confirm booking" active="catalogue" />
+        <main id="main-content" className="page">
           <Alert
             type="warning"
             showIcon
@@ -36,16 +41,29 @@ export function ConfirmPage() {
 
   return (
     <>
-      <AppHeader title="Patient: Confirm Appointment Details" active="catalogue" />
-      <main className="page">
+      <AppHeader title="Confirm booking" active="catalogue" />
+      <main id="main-content" className="page">
         <section className="confirm-card">
           <h2>Confirm Your Appointment</h2>
-          {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+          {error ? (
+            <Alert
+              type="error"
+              showIcon
+              message={error}
+              style={{ marginBottom: 16 }}
+              action={
+                conflict ? (
+                  <Button onClick={() => navigate("/catalogue")}>Back to catalogue</Button>
+                ) : undefined
+              }
+            />
+          ) : null}
           <Form
             layout="vertical"
             onFinish={async () => {
               setSubmitting(true);
               setError(null);
+              setConflict(false);
               try {
                 await api("/appointment", {
                   method: "POST",
@@ -57,9 +75,13 @@ export function ConfirmPage() {
                     notes,
                   }),
                 });
+                clearBookingDraft();
+                markBookingSuccess();
                 navigate("/");
               } catch (caught) {
-                setError(caught instanceof ApiError ? caught.message : "Unable to book this appointment");
+                const apiError = caught instanceof ApiError ? caught : null;
+                setConflict(apiError?.status === 409);
+                setError(apiError?.message ?? "Unable to book this appointment");
               } finally {
                 setSubmitting(false);
               }

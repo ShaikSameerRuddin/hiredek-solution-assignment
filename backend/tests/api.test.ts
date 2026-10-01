@@ -133,5 +133,25 @@ describe("booking API", () => {
       .get("/patients/user-wang")
       .set("Authorization", `Bearer ${patientToken}`);
     expect(denied.status).toBe(403);
+
+    const unrelated = await request(app)
+      .get("/patients/user-james")
+      .set("Authorization", `Bearer ${opticianToken}`);
+    expect(unrelated.status).toBe(404);
+  });
+
+  it("reports healthy storage and echoes a request id", async () => {
+    const response = await request(app).get("/health").set("X-Request-Id", "test-request-1");
+    expect(response.status).toBe(200);
+    expect(response.body.status).toBe("ok");
+    expect(response.headers["x-request-id"]).toBe("test-request-1");
+
+    const broken = createApp({
+      read: async () => {
+        throw new Error("disk failed");
+      },
+    } as JsonStore);
+    const down = await request(broken).get("/health");
+    expect(down.status).toBe(503);
   });
 });

@@ -6,6 +6,7 @@ import { ActionBar } from "../components/ActionBar";
 import { AppHeader } from "../components/AppHeader";
 import { MonthCalendar } from "../components/MonthCalendar";
 import type { AvailabilityResponse, BookingDraft, CatalogueRow, NamedOption } from "../types";
+import { saveBookingDraft } from "../utils/bookingDraft";
 import { todayKey } from "../utils/datetime";
 
 export function CataloguePage() {
@@ -138,13 +139,14 @@ export function CataloguePage() {
       time: chosenSlot.time,
       timeLabel: chosenSlot.label,
     };
+    saveBookingDraft(draft);
     navigate("/confirm", { state: draft });
   }
 
   return (
     <>
-      <AppHeader title="Patient: Search and Filter services, clinics, opticians" active="catalogue" />
-      <main className="page">
+      <AppHeader title="Find a time" active="catalogue" />
+      <main id="main-content" className="page">
         {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
         <ActionBar
           search={searchDraft}

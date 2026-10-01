@@ -1,11 +1,14 @@
 import "./types/express.js";
+import { randomUUID } from "node:crypto";
 import express, { type RequestHandler } from "express";
 import cors from "cors";
+import helmet from "helmet";
 import bcrypt from "bcryptjs";
 import { logger } from "./logger.js";
 import { HttpError } from "./errors.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { requireAuth, requireRole } from "./middleware/auth.js";
+import { loginRateLimit } from "./middleware/loginRateLimit.js";
 import { login, toPublicUser } from "./services/authService.js";
 import {
   appointmentSchema,
@@ -51,9 +54,22 @@ function enrichAppointment(
   };
 }
 
+function corsOrigin(): cors.CorsOptions["origin"] {
+  if (process.env.CORS_ORIGIN) {
+    return process.env.CORS_ORIGIN.split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+  }
+  if (process.env.NODE_ENV === "production") {
+    return false;
+  }
+  return ["http://localhost:5173", "http://127.0.0.1:5173"];
+}
+
 export function createApp(store: JsonStore) {
   const app = express();
-  app.use(cors());
+  app.use(helmet());
+  app.use(cors({ origin: corsOrigin() }));
   app.use(express.json());
   app.use((req, _res, next) => {
     if (req.url === "/api" || req.url.startsWith("/api/") || req.url.startsWith("/api?")) {
@@ -62,22 +78,44 @@ export function createApp(store: JsonStore) {
     next();
   });
   app.use((req, res, next) => {
+    const requestId = req.header("x-request-id")?.trim() || randomUUID();
+    req.requestId = requestId;
+    res.setHeader("X-Request-Id", requestId);
     const started = Date.now();
     res.on("finish", () => {
-      logger.info(
-        { method: req.method, url: req.originalUrl, status: res.statusCode, ms: Date.now() - started },
-        "request",
-      );
+      const payload = {
+        requestId,
+        method: req.method,
+        url: req.originalUrl,
+        status: res.statusCode,
+        ms: Date.now() - started,
+      };
+      if (res.statusCode >= 500) {
+        logger.error(payload, "request");
+      } else if (res.statusCode >= 400) {
+        logger.warn(payload, "request");
+      } else {
+        logger.info(payload, "request");
+      }
     });
     next();
   });
 
-  app.get("/health", (_req, res) => {
-    res.json({ status: "ok" });
-  });
+  app.get(
+    "/health",
+    asyncHandler(async (_req, res) => {
+      try {
+        await store.read();
+        res.json({ status: "ok" });
+      } catch {
+        throw new HttpError(503, "Storage unavailable");
+      }
+    }),
+  );
 
   app.post(
     "/auth/login",
+    loginRateLimit(),
     asyncHandler(async (req, res) => {
       const body = loginSchema.parse(req.body);
       const result = await login(store, body.email, body.password);
@@ -276,8 +314,19 @@ export function createApp(store: JsonStore) {
     requireRole("optician"),
     asyncHandler(async (req, res) => {
       const database = await store.read();
+      const opticianUser = database.users.find((user) => user.id === req.auth?.sub);
+      if (!opticianUser?.opticianId) {
+        throw new HttpError(403, "You do not have access to this resource");
+      }
       const patient = database.users.find((user) => user.id === req.params.id && user.role === "patient");
       if (!patient) {
+        throw new HttpError(404, "Patient not found");
+      }
+      const linked = database.appointments.some(
+        (appointment) =>
+          appointment.patientId === patient.id && appointment.opticianId === opticianUser.opticianId,
+      );
+      if (!linked) {
         throw new HttpError(404, "Patient not found");
       }
       const history = database.appointments

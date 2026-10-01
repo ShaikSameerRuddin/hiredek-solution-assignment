@@ -31,7 +31,11 @@ function RequireRole({ role, children }: { role: Role; children: ReactNode }) {
 export function App() {
   const { user, loading } = useAuth();
   return (
-    <Routes>
+    <>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
+      <Routes>
       <Route
         path="/login"
         element={loading ? <Spin /> : user ? <Navigate to={user.role === "optician" ? "/schedule" : "/"} replace /> : <LoginPage />}
@@ -78,5 +82,6 @@ export function App() {
       />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
+    </>
   );
 }

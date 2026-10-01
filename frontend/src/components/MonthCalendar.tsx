@@ -25,7 +25,11 @@ export function MonthCalendar({ year, month, selectedDate, onSelectDate, onMonth
   const days = new Date(year, month, 0).getDate();
   const cells: Array<number | null> = [...Array(firstWeekday).fill(null), ...Array.from({ length: days }, (_, index) => index + 1)];
 
-  function shiftMonth(delta: number) {
+  function shift(delta: number) {
+    if (mode === "year") {
+      onMonthChange(year + delta, month);
+      return;
+    }
     const next = new Date(year, month - 1 + delta, 1);
     onMonthChange(next.getFullYear(), next.getMonth() + 1);
   }
@@ -33,9 +37,13 @@ export function MonthCalendar({ year, month, selectedDate, onSelectDate, onMonth
   return (
     <div className="calendar">
       <div className="calendar-toolbar">
-        <Button aria-label="Previous month" icon={<LeftOutlined />} onClick={() => shiftMonth(-1)} />
+        <Button
+          aria-label={mode === "year" ? "Previous year" : "Previous month"}
+          icon={<LeftOutlined />}
+          onClick={() => shift(-1)}
+        />
         <strong>
-          {MONTHS[month - 1]} {year}
+          {mode === "year" ? year : `${MONTHS[month - 1]} ${year}`}
         </strong>
         <div>
           <Button type={mode === "month" ? "primary" : "default"} onClick={() => setMode("month")}>
@@ -45,7 +53,11 @@ export function MonthCalendar({ year, month, selectedDate, onSelectDate, onMonth
             Year
           </Button>
         </div>
-        <Button aria-label="Next month" icon={<RightOutlined />} onClick={() => shiftMonth(1)} />
+        <Button
+          aria-label={mode === "year" ? "Next year" : "Next month"}
+          icon={<RightOutlined />}
+          onClick={() => shift(1)}
+        />
       </div>
       {mode === "year" ? (
         <div className="year-grid">

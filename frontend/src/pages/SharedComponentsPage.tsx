@@ -21,7 +21,7 @@ export function SharedComponentsPage() {
   return (
     <>
       <AppHeader title="Shared Components" active="shared" />
-      <main className="page">
+      <main id="main-content" className="page">
         <Typography.Paragraph>
           This page showcases shared components used across the application. These base components are used by the
           catalogue search. There is no obligation to reuse them outside that flow, but they keep the filters consistent.

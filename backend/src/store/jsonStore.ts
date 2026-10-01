@@ -1,4 +1,4 @@
-import { access, copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import bcrypt from "bcryptjs";
 import type { Database } from "../types.js";
@@ -24,7 +24,7 @@ export class JsonStore {
     await mkdir(this.dataDir, { recursive: true });
     const usersPath = path.join(this.dataDir, "users.json");
     try {
-      await access(usersPath);
+      await readFile(usersPath);
     } catch {
       const pairs: Array<[string, string]> = [
         ["seed_data_users.json", "users.json"],
@@ -49,7 +49,7 @@ export class JsonStore {
       }
     }
     if (changed) {
-      await writeFile(usersPath, JSON.stringify(users, null, 2));
+      await atomicWrite(usersPath, JSON.stringify(users, null, 2));
     }
   }
 
@@ -83,8 +83,30 @@ export class JsonStore {
       ["services.json", database.services],
       ["appointments.json", database.appointments],
     ];
+    const staged: Array<{ tmp: string; dest: string }> = [];
     for (const [name, value] of entries) {
-      await writeFile(path.join(this.dataDir, name), JSON.stringify(value, null, 2));
+      const dest = path.join(this.dataDir, name);
+      const tmp = `${dest}.tmp`;
+      await writeFile(tmp, JSON.stringify(value, null, 2));
+      staged.push({ tmp, dest });
     }
+    for (const { tmp, dest } of staged) {
+      await replaceFile(tmp, dest);
+    }
+  }
+}
+
+async function atomicWrite(dest: string, contents: string): Promise<void> {
+  const tmp = `${dest}.tmp`;
+  await writeFile(tmp, contents);
+  await replaceFile(tmp, dest);
+}
+
+async function replaceFile(tmp: string, dest: string): Promise<void> {
+  try {
+    await rename(tmp, dest);
+  } catch {
+    await writeFile(dest, await readFile(tmp));
+    await unlink(tmp).catch(() => undefined);
   }
 }
